@@ -1,0 +1,251 @@
+body {
+  background-color: #c3c9d4;
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  border: 1px solid darkgray;
+  background-color: #fff;
+
+  margin: auto;
+  padding: 1.5rem;
+
+  max-width: 600px;
+  min-height: 80vh;
+}
+
+.plus {
+  margin-left: auto;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+.delete {
+  margin-left: auto;
+
+  border: none;
+  border-radius: 5px;
+  background: none;
+}
+
+.delete:hover {
+  background-color: #c3c9d4;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 1.5rem;
+}
+
+/*********************** New Button Style ******************************/
+
+/*.new-button {*/
+/*  margin: auto;*/
+/*  color: rgb(127, 185, 127);*/
+/*  cursor: pointer;*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  background: none;*/
+/*  font-weight: 600;*/
+/*  border: 1px solid rgb(127, 185, 127);*/
+/*}*/
+
+.new-button {
+  background-color: #EA4C89;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.new-button:hover,
+.new-button:focus {
+  background-color: #F082AC;
+}
+/*********************** End of New Button Style ******************************/
+
+.button-box {
+  display: flex;
+}
+
+.nav-link {
+  float: right;
+}
+
+
+.input-box {
+  display: flex;
+  padding: 1.5rem;
+}
+
+/******************************** Task Input style *********************************/
+
+.task-input {
+  flex-grow: 1;
+  border: none;
+  border-bottom: 1px solid #c3c9d4;
+  font-size: 18px;
+  /*font-family: "Poppins", sans-serif;*/
+}
+
+.task-input:focus {
+  outline: none;
+}
+
+
+
+/*!* From Uiverse.io by AbanoubMagdy1 *!*/
+/*.task-input {*/
+/*  position: relative;*/
+/*}*/
+
+/*.task-input .input {*/
+/*  font-size: 16px;*/
+/*  padding: 10px 10px 10px 5px;*/
+/*  display: block;*/
+/*  width: 500px;*/
+/*  border: none;*/
+/*  border-bottom: 1px solid #515151;*/
+/*  background: transparent;*/
+/*}*/
+
+/*.task-input .input:focus {*/
+/*  outline: none;*/
+/*}*/
+
+/*.task-input .label {*/
+/*  color: #999;*/
+/*  font-size: 18px;*/
+/*  font-weight: normal;*/
+/*  position: absolute;*/
+/*  pointer-events: none;*/
+/*  left: 5px;*/
+/*  top: 10px;*/
+/*  transition: 0.2s ease all;*/
+/*  -moz-transition: 0.2s ease all;*/
+/*  -webkit-transition: 0.2s ease all;*/
+/*}*/
+
+/*.task-input .input:focus ~ label .label-char,*/
+/*.task-input .input:valid ~ label .label-char {*/
+/*  top: -20px;*/
+/*  font-size: 14px;*/
+/*  color: #5264AE;*/
+/*}*/
+
+/*.task-input .bar {*/
+/*  position: relative;*/
+/*  display: block;*/
+/*  width: 500px;*/
+/*}*/
+
+/*.task-input .bar:before,.task-input .bar:after {*/
+/*  content: '';*/
+/*  height: 2px;*/
+/*  width: 0;*/
+/*  bottom: 1px;*/
+/*  position: absolute;*/
+/*  background: #5264AE;*/
+/*  transition: 0.2s ease all;*/
+/*  -moz-transition: 0.2s ease all;*/
+/*  -webkit-transition: 0.2s ease all;*/
+/*}*/
+
+/*.task-input .bar:before {*/
+/*  left: 50%;*/
+/*}*/
+
+/*.task-input .bar:after {*/
+/*  right: 50%;*/
+/*}*/
+
+/*.task-input .input:focus ~ .bar:before,*/
+/*.task-input .input:focus ~ .bar:after {*/
+/*  width: 100%;*/
+/*}*/
+/***********************End of Task Input Style******************************/
+
+/******************************** Save button style *********************************/
+
+/*.save-button {*/
+/*  margin-left: 1.5rem;*/
+/*}*/
+
+.save-button {
+  appearance: none;
+  background-color: #2ea44f;
+  border: 1px solid rgba(27, 31, 35, .15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 6px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.save-button:focus:not(:focus-visible):not(.focus-visible) {
+  box-shadow: none;
+  outline: none;
+}
+
+.save-button:hover {
+  background-color: #2c974b;
+}
+
+.save-button:focus {
+  box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+  outline: none;
+}
+
+.save-button:disabled {
+  background-color: #94d3a2;
+  border-color: rgba(27, 31, 35, .1);
+  color: rgba(255, 255, 255, .8);
+  cursor: default;
+}
+
+.save-button:active {
+  background-color: #298e46;
+  box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+}
+
+/******************************** End of Save button style *********************************/
