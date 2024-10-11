@@ -1,7 +1,7 @@
 package api
 
 type ListResponse struct {
-	Tasks []task `json:"tasks"`
+	Tasks []Task `json:"tasks"`
 }
 
 type CreatePayload struct {
@@ -9,7 +9,7 @@ type CreatePayload struct {
 }
 
 type CreateTaskResponse struct {
-	Task *task `json:"task"`
+	Task *Task `json:"Task"`
 }
 
 type CheckPayload struct {
@@ -17,5 +17,5 @@ type CheckPayload struct {
 }
 
 type CheckTaskResponse struct {
-	Task *task `json:"task"`
+	Task *Task `json:"Task"`
 }

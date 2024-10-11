@@ -9,9 +9,7 @@ export const Tasks = () => {
 
   const fetchTasks = useCallback(async () => {
     const resp = await fetch ("http://localhost:8080/tasks");
-     const body = await resp.json();
-     // console.log(body);
-
+    const body = await resp.json();
     const { tasks } = body;
     setTasks(tasks);
   }, [setTasks]);

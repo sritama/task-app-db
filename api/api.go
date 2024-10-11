@@ -2,15 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/go-chi/chi/v5"
+	"fmt"
 	"net/http"
 	"strings"
 )
-
-type Service struct {
-	router chi.Router
-	list   taskLists
-}
 
 func (s *Service) CreateTask() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -21,16 +16,21 @@ func (s *Service) CreateTask() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// fmt.Printf("The request body is %+v\n", payload)
+
 		if payload.Description == "" {
 			http.Error(w, "no task description provided", http.StatusBadRequest)
 			return
 		}
 
-		response := CreateTaskResponse{
-			Task: s.list.Create(payload.Description),
+		task, err := s.Insert(payload.Description)
+		if err != nil {
+			http.Error(w, "Error inserting data in DB", http.StatusInternalServerError)
+			return
 		}
-		// fmt.Printf("The response is %+v\n", response)
+
+		response := CreateTaskResponse{
+			Task: task,
+		}
 
 		jsonResponse, err := json.Marshal(response)
 		if err != nil {
@@ -47,8 +47,13 @@ func (s *Service) CreateTask() http.HandlerFunc {
 func (s *Service) GetTaskList() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// fmt.Println("Getting the list of tasks")
+		tasks, err := s.GetAllTasks()
+		if err != nil {
+			http.Error(w, "Error receiving data from DB", http.StatusInternalServerError)
+			return
+		}
 		response := ListResponse{
-			Tasks: s.list.GetList(),
+			Tasks: tasks,
 		}
 
 		jsonResponse, err := json.Marshal(response)
@@ -69,14 +74,20 @@ func (s *Service) DeleteTask() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		id := strings.TrimPrefix(r.URL.Path, "/tasks/")
-		s.list.Delete(id)
+
+		_, err := s.TaskDB.Exec("DELETE FROM tasks WHERE ID = ?", id)
+
+		if err != nil {
+			http.Error(w, "Error deleting data", http.StatusInternalServerError)
+			return
+		}
+		fmt.Println("Data deleted successfully")
+
 	}
 }
 
 func (s *Service) CheckTask() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		// fmt.Printf("The url path is %v\n", r.URL.Path)
 
 		id := strings.TrimPrefix(r.URL.Path, "/tasks/")
 
@@ -88,7 +99,7 @@ func (s *Service) CheckTask() http.HandlerFunc {
 			return
 		}
 
-		taskResponse, err := s.list.Check(id, payload.Completed)
+		taskResponse, err := s.Check(id, payload.Completed)
 		if err != nil {
 			http.Error(w, "error in checking task", http.StatusInternalServerError)
 			return

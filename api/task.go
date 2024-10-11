@@ -2,100 +2,104 @@ package api
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"sort"
 	"time"
+
+	"github.com/google/uuid"
+	_ "github.com/mattn/go-sqlite3"
 )
 
-type task struct {
+type Task struct {
 	ID          string `json:"id"`
 	Description string `json:"description"`
 	Completed   bool   `json:"completed"`
 	CreatedAt   int64  `json:"createdAt"`
 }
 
-type taskLists struct {
-	tasks map[string]*task
-}
+func (s *Service) Insert(description string) (*Task, error) {
 
-type TaskLists interface {
-	Create(description string) *task
-	Check(id string, completed bool) (*task, error)
-	Delete(id string)
-	GetList() []task
-}
-
-func newTaskList() taskLists {
-
-	list := taskLists{
-		tasks: make(map[string]*task),
-	}
-	list.AddInitialTasks()
-	return list
-}
-func (l *taskLists) AddInitialTasks() {
-
-	id1 := uuid.NewString()
-	l.tasks[id1] = &task{
-		ID:          id1,
-		Description: "Pick up dry cleaning",
-		Completed:   true,
-		CreatedAt:   1,
-	}
-
-	id2 := uuid.NewString()
-	l.tasks[id2] = &task{
-		ID:          id2,
-		Description: "Grab Coffee",
-		Completed:   false,
-		CreatedAt:   2,
-	}
-
-	id3 := uuid.NewString()
-	l.tasks[id3] = &task{
-		ID:          id3,
-		Description: "Medical appointment",
-		Completed:   false,
-		CreatedAt:   3,
-	}
-}
-
-func (l *taskLists) Create(description string) *task {
-
-	id := uuid.NewString()
-	newTask := &task{
-		ID:          id,
+	newTask := Task{
+		ID:          uuid.NewString(),
 		Description: description,
+		Completed:   false,
 		CreatedAt:   time.Now().Unix(),
 	}
 
-	l.tasks[id] = newTask
-	fmt.Printf("Sucessfully created new task %v\n", newTask)
-	return newTask
+	_, err := s.TaskDB.Exec("INSERT INTO tasks (ID, DESCRIPTION, CHECKED, CREATED_AT) VALUES (?, ?, ?, ?)", newTask.ID, newTask.Description, 0, newTask.CreatedAt)
 
+	if err != nil {
+		fmt.Printf("Error inserting data:\n %s", err)
+		return nil, err
+	}
+
+	fmt.Println("Data inserted successfully")
+
+	return &newTask, nil
 }
 
-func (l *taskLists) Check(id string, completed bool) (*task, error) {
-	l.tasks[id].Completed = completed
-	return l.tasks[id], nil
-}
+func (s *Service) GetAllTasks() ([]Task, error) {
 
-func (l *taskLists) Delete(id string) {
-	delete(l.tasks, id)
-}
+	rows, err := s.TaskDB.Query("SELECT * FROM TASKS")
+	if err != nil {
+		fmt.Printf("error in querying data from database\n %s", err)
+		return nil, err
+	}
+	defer rows.Close()
 
-func (l *taskLists) GetList() []task {
+	tasks := make([]Task, 0)
 
-	// fmt.Printf("Number of tasks %d\n", len(l.tasks))
-	tasks := make([]task, 0)
+	for rows.Next() {
+		var fetchedTask Task
+		if err := rows.Scan(&fetchedTask.ID, &fetchedTask.Description, &fetchedTask.Completed, &fetchedTask.CreatedAt); err != nil {
+			fmt.Printf("error in querying data from database\n %s", err)
+			return nil, err
+		}
+		// fmt.Printf("Fetched Task: %v\n", Task)
 
-	for _, t := range l.tasks {
-		tasks = append(tasks, *t)
-		// fmt.Printf("Task Description %s\n", t.Description)
+		tasks = append(tasks, fetchedTask)
 	}
 	sort.Slice(tasks, func(i, j int) bool {
 		return tasks[i].CreatedAt < tasks[j].CreatedAt
 	})
 
-	return tasks
+	return tasks, nil
+}
+
+func (s *Service) Check(id string, completed bool) (*Task, error) {
+
+	var checked int
+	if completed {
+		checked = 1
+	} else {
+		checked = 0
+	}
+
+	_, err := s.TaskDB.Exec("UPDATE tasks set CHECKED = ? where ID = ?", checked, id)
+
+	if err != nil {
+		fmt.Printf("Error updating data:\n %s", err)
+		return nil, err
+	}
+
+	fmt.Println("Data updated successfully")
+
+	rows, err := s.TaskDB.Query("SELECT * from tasks where ID = ?", id)
+	if err != nil {
+		fmt.Printf("Error querying data after update:\n %s", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var updatedTask Task
+	for rows.Next() {
+		if err := rows.Scan(&updatedTask.ID, &updatedTask.Description, &updatedTask.Completed, &updatedTask.CreatedAt); err != nil {
+			fmt.Printf("error in querying data after update\n %s", err)
+			return nil, err
+		}
+	}
+
+	fmt.Println("Data fetched successfully after update")
+
+	return &updatedTask, nil
+
 }
