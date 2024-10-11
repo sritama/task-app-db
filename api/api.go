@@ -22,14 +22,14 @@ func (s *Service) CreateTask() http.HandlerFunc {
 			return
 		}
 
-		task, err := s.Insert(payload.Description)
+		newTask, err := s.Insert(payload.Description)
 		if err != nil {
 			http.Error(w, "Error inserting data in DB", http.StatusInternalServerError)
 			return
 		}
 
 		response := CreateTaskResponse{
-			Task: task,
+			Task: newTask,
 		}
 
 		jsonResponse, err := json.Marshal(response)

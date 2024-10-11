@@ -9,7 +9,7 @@ type CreatePayload struct {
 }
 
 type CreateTaskResponse struct {
-	Task *Task `json:"Task"`
+	Task *Task `json:"task"`
 }
 
 type CheckPayload struct {
@@ -17,5 +17,5 @@ type CheckPayload struct {
 }
 
 type CheckTaskResponse struct {
-	Task *Task `json:"Task"`
+	Task *Task `json:"task"`
 }
