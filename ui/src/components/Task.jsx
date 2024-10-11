@@ -16,8 +16,8 @@ export const Task = (props) => {
     });
 
     const body = await resp.json();
-    const { Task } = body;
-    setCompleted(Task.completed);
+    const { task } = body;
+    setCompleted(task.completed);
   }
 
   async function handleDelete(e) {

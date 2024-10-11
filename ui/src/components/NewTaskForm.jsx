@@ -18,7 +18,7 @@ export const NewTaskInput = (props) => {
     });
 
     const body = await resp.json();
-    props.onCreateSuccess(body.Task);
+    props.onCreateSuccess(body.task);
     setShowInput(false);
     setValue("");
   }
