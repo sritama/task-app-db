@@ -1,9 +1,5 @@
-This is a simple web app for creating, updating, deleting tasks. The backend is written in Golang and front end is written using React framework. 
+This is a simple web app for creating, updating, deleting tasks. The backend is written in Golang and front end is written using React framework. I am using a SQLite DB for storing data
 
-TODOs: 
-
-1. Add persistent storage (SQLite database)
-2. GraphQL Integration
 
 ### UI Code set up
 
@@ -16,7 +12,7 @@ Go to the project root directory and run the following in the command line.
 
 ```go
 go build
-./sample-web-app
+./task-app-db
 ```
 
 #### Run the client
